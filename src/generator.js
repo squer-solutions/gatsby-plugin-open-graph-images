@@ -19,6 +19,8 @@ exports.generateThumbnailImages = async (thumbnailGenerationJobs) => {
     await page.goto(componentUrl);
     await page.screenshot({ imgPath, ...size });
 
+    fs.unlinkSync(join("public", componentPath, "index.html"));
+
     console.log(`🖼 created Thumbnail: ${imgPath}`);
   }
 
