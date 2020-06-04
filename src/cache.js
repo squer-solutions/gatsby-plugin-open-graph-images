@@ -1,4 +1,4 @@
-exports.thumbnailGenerationJobs = (() => {
+exports.thumbnailGenerationJobCache = (() => {
   const cacheKey = `__gatsby-page-thumbnails-definitions`;
 
   return {

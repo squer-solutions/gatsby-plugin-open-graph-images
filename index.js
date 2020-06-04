@@ -1,23 +1,26 @@
-exports.createThumbnail = (createPage, options) => {
-    const {id, component, size, context, format} = options;
-    const {width, height} = {width: 1200, height: 800, ...(size || {})};
-    const thumbnailTempPath = `__generated/thumbnails/${id}`;
+const { join } = require("path");
+const { config } = require("./src/config");
 
-    const thumbnailMetaData = {id, size: {width, height}, format: format};
+exports.createOpenGraphImage = (createPage, options) => {
+  const { defaultWidth, defaultHeight } = config.getConfig();
+  const { path, component, size, context } = options;
 
-    const thumbnailGenerationJob = {id, ...thumbnailMetaData};
+  const { width, height } = { width: defaultWidth, height: defaultHeight, ...(size || {}) };
+  const componentPath = `__generated/thumbnails/${encodeURIComponent(path.split("/").join(""))}`;
+  const imgPath = join("public", path);
 
-    createPage({
-        path: thumbnailTempPath,
-        component: component,
-        context: {
-            ...context,
-            thumbnail: thumbnailMetaData,
-            __thumbnailGenerationContext: thumbnailGenerationJob,
-        },
-    });
+  const thumbnailMetaData = { imgPath, size: { width, height } };
+  const thumbnailGenerationJob = { componentPath, ...thumbnailMetaData };
 
-    if (options.emitCreationDetails) {
-        return {thumbnailGenerationJob, thumbnailMetaData};
-    }
+  createPage({
+    path: componentPath,
+    component: component,
+    context: {
+      ...context,
+      thumbnail: thumbnailMetaData,
+      __thumbnailGenerationContext: thumbnailGenerationJob,
+    },
+  });
+
+  return { thumbnailGenerationJob, thumbnailMetaData };
 };

@@ -1,9 +1,9 @@
-const { config } = require("./plugin-config");
 const puppeteer = require("puppeteer");
 const express = require("express");
-const http = require("http");
 const fs = require("fs");
-const path = require("path");
+const http = require("http");
+const { config } = require("./config");
+const { join } = require("path");
 
 exports.generateThumbnailImages = async (thumbnailGenerationJobs) => {
   ensureThatThumbnailDirExists();
@@ -13,20 +13,13 @@ exports.generateThumbnailImages = async (thumbnailGenerationJobs) => {
   const page = await browser.newPage();
 
   for (const thumbnailGenerationJob of thumbnailGenerationJobs) {
-    const { id, componentPath } = thumbnailGenerationJob;
-    const { defaultImageFormat, targetDirectory, defaultWidth, defaultHeight } = config.getConfig();
-
-    const width = thumbnailGenerationJob.width || defaultWidth;
-    const height = thumbnailGenerationJob.height || defaultHeight;
-    const format = thumbnailGenerationJob.format || defaultImageFormat;
-
-    const thumbnailImagePath = path.join("public", targetDirectory, `${id}.${format}`);
+    const { componentPath, imgPath, size } = thumbnailGenerationJob;
     const componentUrl = `${servingUrl}/${componentPath}`;
 
     await page.goto(componentUrl);
-    await page.screenshot({ path: thumbnailImagePath, width, height });
+    await page.screenshot({ imgPath, ...size });
 
-    console.log(`🖼 created Thumbnail: ${thumbnailImagePath}`);
+    console.log(`🖼 created Thumbnail: ${imgPath}`);
   }
 
   await browser.close();
@@ -48,7 +41,7 @@ const getServingUrl = async () => {
 
 const ensureThatThumbnailDirExists = () => {
   const targetDir = config.getConfig().targetDirectory;
-  const thumbnailImagePath = path.join("public", targetDir);
+  const thumbnailImagePath = join("public", targetDir);
 
   try {
     fs.statSync(thumbnailImagePath);

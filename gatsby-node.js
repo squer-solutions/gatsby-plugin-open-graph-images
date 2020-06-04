@@ -1,22 +1,19 @@
-const { config } = require("./src/plugin-config");
-const { thumbnailGenerationJobs } = require("./src/thumbnail-cache");
-const { generateThumbnailImages } = require("./src/thumbnail-generator");
-const { createThumbnail } = require("./index");
+const { join } = require("path");
+const { createOpenGraphImage } = require("./index");
+const { generateThumbnailImages } = require("./src/generator");
+const { config } = require("./src/config");
+const { thumbnailGenerationJobCache } = require("./src/cache");
 
 exports.onPreInit = async ({ cache }, pluginConfig) => {
   config.init(pluginConfig);
-  await thumbnailGenerationJobs.init(cache);
-};
-
-const createThumbnailIdFromPath = (path) => {
-  return encodeURIComponent(path.split("/").join(""));
+  await thumbnailGenerationJobCache.init(cache);
 };
 
 exports.onCreatePage = async ({ page, actions, cache }) => {
   // check if page is thumbnailPage, in this situation just add metadata to cache
   // this happens when a thumbnail is directly create via `createThumbnail()`
   if (!!page.context["__thumbnailGenerationContext"]) {
-    await thumbnailGenerationJobs.add(cache, page.context["__thumbnailGenerationContext"]);
+    await thumbnailGenerationJobCache.add(cache, page.context["__thumbnailGenerationContext"]);
     return;
   }
 
@@ -28,16 +25,18 @@ exports.onCreatePage = async ({ page, actions, cache }) => {
   const { createPage, deletePage } = actions;
 
   // create new thumbnail page & and add metadata to cache
-  const thumbnailId = createThumbnailIdFromPath(page.path);
-  const { thumbnailGenerationJob, thumbnailMetadata } = createThumbnail(createPage, {
-    id: thumbnailId,
+  const thumbnailId = encodeURIComponent(page.path.split("/").join(""));
+  const { defaultImageFormat, targetDirectory } = config.getConfig();
+  const format = page.context.thumbnail.format || defaultImageFormat;
+  const path = join(targetDirectory, `${thumbnailId}.${format}`);
+
+  const { thumbnailGenerationJob, thumbnailMetadata } = createOpenGraphImage(createPage, {
+    path: path,
     component: page.context.thumbnail.component,
     size: page.context.thumbnail.size,
-    format: page.context.thumbnail.format,
     context: page.context,
-    emitCreationDetails: true,
   });
-  await thumbnailGenerationJobs.add(cache, thumbnailGenerationJob);
+  await thumbnailGenerationJobCache.add(cache, thumbnailGenerationJob);
 
   // update existing page with thumbnail
   deletePage(page);
@@ -51,6 +50,6 @@ exports.onCreatePage = async ({ page, actions, cache }) => {
 };
 
 exports.onPostBuild = async ({ cache }) => {
-  const jobDefinitions = await thumbnailGenerationJobs.getAll(cache);
+  const jobDefinitions = await thumbnailGenerationJobCache.getAll(cache);
   await generateThumbnailImages(jobDefinitions);
 };
