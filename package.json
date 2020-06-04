@@ -4,7 +4,7 @@
   "description": "Build dynamic open-graph preview images for gatsby pages. Simply use react components to create SEO ready preview images for Twitter, Facebook, Linkedin, Google, and many more.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "format": "prettier --write ."
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/squer-solutions/gatsby-open-graph-images/issues"
   },
-  "homepage": "https://github.com/squer-solutions/gatsby-open-graph-images#readme"
+  "homepage": "https://github.com/squer-solutions/gatsby-open-graph-images#readme",
+  "devDependencies": {
+    "prettier": "^2.0.5"
+  }
 }
