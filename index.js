@@ -2,11 +2,11 @@ const { join } = require("path");
 const { config } = require("./src/config");
 
 exports.createOpenGraphImage = (createPage, options) => {
-  const { defaultWidth, defaultHeight } = config.getConfig();
+  const { defaultWidth, defaultHeight, temporalThumbnailComponentDirectory } = config.getConfig();
   const { path, component, size, context } = options;
 
   const { width, height } = { width: defaultWidth, height: defaultHeight, ...(size || {}) };
-  const componentPath = `__generated/thumbnails/${encodeURIComponent(path.split("/").join(""))}`;
+  const componentPath = join(temporalThumbnailComponentDirectory, encodeURIComponent(path.split("/").join("")));
   const imgPath = join("public", path);
 
   const thumbnailMetaData = { imgPath, size: { width, height } };
