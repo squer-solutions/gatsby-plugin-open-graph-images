@@ -1,9 +1,11 @@
+const { config } = require("./src/plugin-config");
 const { thumbnailGenerationJobs } = require("./src/thumbnail-cache");
 const { generateThumbnailImages } = require("./src/thumbnail-generator");
 const { createThumbnail } = require("./index");
 
-exports.onPreInit = async ({ cache }) => {
-  await thumbnailGenerationJobs.initialize(cache);
+exports.onPreInit = async ({ cache }, pluginConfig) => {
+  config.init(pluginConfig);
+  await thumbnailGenerationJobs.init(cache);
 };
 
 const createThumbnailIdFromPath = (path) => {
@@ -14,10 +16,7 @@ exports.onCreatePage = async ({ page, actions, cache }) => {
   // check if page is thumbnailPage, in this situation just add metadata to cache
   // this happens when a thumbnail is directly create via `createThumbnail()`
   if (!!page.context["__thumbnailGenerationContext"]) {
-    await thumbnailGenerationJobs.add(
-      cache,
-      page.context["__thumbnailGenerationContext"]
-    );
+    await thumbnailGenerationJobs.add(cache, page.context["__thumbnailGenerationContext"]);
     return;
   }
 
@@ -30,16 +29,14 @@ exports.onCreatePage = async ({ page, actions, cache }) => {
 
   // create new thumbnail page & and add metadata to cache
   const thumbnailId = createThumbnailIdFromPath(page.path);
-  const { thumbnailGenerationJob, thumbnailMetadata } = createThumbnail(
-    createPage,
-    {
-      id: thumbnailId,
-      component: page.context.thumbnail.component,
-      size: page.context.thumbnail.size,
-      context: page.context,
-      emitCreationDetails: true,
-    }
-  );
+  const { thumbnailGenerationJob, thumbnailMetadata } = createThumbnail(createPage, {
+    id: thumbnailId,
+    component: page.context.thumbnail.component,
+    size: page.context.thumbnail.size,
+    format: page.context.thumbnail.format,
+    context: page.context,
+    emitCreationDetails: true,
+  });
   await thumbnailGenerationJobs.add(cache, thumbnailGenerationJob);
 
   // update existing page with thumbnail

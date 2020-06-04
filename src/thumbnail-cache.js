@@ -2,7 +2,7 @@ exports.thumbnailGenerationJobs = (() => {
   const cacheKey = `__gatsby-page-thumbnails-definitions`;
 
   return {
-    initialize: async (cache) => {
+    init: async (cache) => {
       await cache.set(cacheKey, []);
     },
     add: async (cache, thumbnailMetadata) => {
