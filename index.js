@@ -2,15 +2,18 @@ const { join } = require("path");
 const { config } = require("./src/config");
 
 exports.createOpenGraphImage = (createPage, options) => {
-  const { defaultWidth, defaultHeight, temporalThumbnailComponentDirectory } = config.getConfig();
-  const { path, component, size, context } = options;
+  if (!config.isValid()) return;
 
-  const { width, height } = { width: defaultWidth, height: defaultHeight, ...(size || {}) };
-  const componentPath = join(temporalThumbnailComponentDirectory, encodeURIComponent(path.split("/").join("")));
+  const { defaultSize, componentGenerationDir, domain } = config.getConfig();
+  const { path, component, context } = options;
+
+  const size = { ...defaultSize, ...(options.size || {}) };
+  const componentPath = join(componentGenerationDir, encodeURIComponent(path.split("/").join("")));
   const imgPath = join("public", path);
+  const webImgPath = join(domain, path);
 
-  const thumbnailMetaData = { imgPath, size: { width, height } };
-  const thumbnailGenerationJob = { componentPath, ...thumbnailMetaData };
+  const thumbnailMetaData = { path: webImgPath, size };
+  const thumbnailGenerationJob = { componentPath, imgPath, size };
 
   createPage({
     path: componentPath,

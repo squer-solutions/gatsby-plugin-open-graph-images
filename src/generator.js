@@ -2,12 +2,9 @@ const puppeteer = require("puppeteer");
 const express = require("express");
 const fs = require("fs");
 const http = require("http");
-const { config } = require("./config");
-const { join } = require("path");
+const { join, dirname } = require("path");
 
 exports.generateThumbnailImages = async (thumbnailGenerationJobs) => {
-  ensureThatThumbnailDirExists();
-
   const servingUrl = await getServingUrl();
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
@@ -17,11 +14,14 @@ exports.generateThumbnailImages = async (thumbnailGenerationJobs) => {
     const componentUrl = `${servingUrl}/${componentPath}`;
 
     await page.goto(componentUrl);
-    await page.screenshot({ imgPath, ...size });
+    await page.setViewport(size);
+
+    ensureThatThumbnailDirExists(imgPath);
+    await page.screenshot({ path: imgPath, clip: { x: 0, y: 0, ...size } });
 
     fs.unlinkSync(join("public", componentPath, "index.html"));
 
-    console.log(`🖼 created Thumbnail: ${imgPath}`);
+    console.log(`🖼 created Thumbnail: ${imgPath} ${size.width}x${size.height}`);
   }
 
   await browser.close();
@@ -41,15 +41,14 @@ const getServingUrl = async () => {
   return isNetlify ? netlifyUrl : await getUrlFromFreshExpressInstance();
 };
 
-const ensureThatThumbnailDirExists = () => {
-  const targetDir = config.getConfig().targetDirectory;
-  const thumbnailImagePath = join("public", targetDir);
+const ensureThatThumbnailDirExists = (path) => {
+  const targetDir = dirname(path);
 
   try {
-    fs.statSync(thumbnailImagePath);
+    fs.statSync(targetDir);
   } catch (err) {
     if (err.code === "ENOENT") {
-      fs.mkdirSync(thumbnailImagePath);
+      fs.mkdirSync(targetDir);
     }
   }
 };

@@ -10,6 +10,8 @@ exports.onPreInit = async ({ cache }, pluginConfig) => {
 };
 
 exports.onCreatePage = async ({ page, actions, cache }) => {
+  if (!config.isValid()) return;
+
   // check if page is thumbnailPage, in this situation just add metadata to cache
   // this happens when a thumbnail is directly create via `createThumbnail()`
   if (!!page.context["__thumbnailGenerationContext"]) {
@@ -26,11 +28,11 @@ exports.onCreatePage = async ({ page, actions, cache }) => {
 
   // create new thumbnail page & and add metadata to cache
   const thumbnailId = encodeURIComponent(page.path.split("/").join(""));
-  const { defaultImageFormat, targetDirectory } = config.getConfig();
-  const format = page.context.thumbnail.format || defaultImageFormat;
-  const path = join(targetDirectory, `${thumbnailId}.${format}`);
+  const implicitModeOptions = config.getConfig().implicitModeOptions;
+  const format = page.context.thumbnail.format || implicitModeOptions.format;
+  const path = join(implicitModeOptions.targetDir, `${thumbnailId}.${format}`);
 
-  const { thumbnailGenerationJob, thumbnailMetadata } = createOpenGraphImage(createPage, {
+  const { thumbnailGenerationJob, thumbnailMetaData } = createOpenGraphImage(createPage, {
     path: path,
     component: page.context.thumbnail.component,
     size: page.context.thumbnail.size,
@@ -44,12 +46,14 @@ exports.onCreatePage = async ({ page, actions, cache }) => {
     ...page,
     context: {
       ...page.context,
-      thumbnail: thumbnailMetadata,
+      thumbnail: thumbnailMetaData,
     },
   });
 };
 
 exports.onPostBuild = async ({ cache }) => {
+  if (!config.isValid()) return;
+
   const jobDefinitions = await thumbnailGenerationJobCache.getAll(cache);
   await generateThumbnailImages(jobDefinitions);
 };
