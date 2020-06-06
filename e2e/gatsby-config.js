@@ -25,7 +25,9 @@ module.exports = {
     `gatsby-plugin-sharp`,
     {
       resolve: require.resolve(`../`),
-      options: {},
+      options: {
+        domain: "http://localhost:9000"
+      },
     },
   ],
 };

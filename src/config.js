@@ -6,7 +6,7 @@ exports.config = (() => {
     },
     implicitModeOptions: {
       format: "png",
-      targetDir: "thumbnails",
+      targetDir: "og-images",
     },
     componentGenerationDir: "__generated",
   };

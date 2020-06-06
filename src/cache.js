@@ -1,13 +1,13 @@
-exports.thumbnailGenerationJobCache = (() => {
-  const cacheKey = `__gatsby-page-thumbnails-definitions`;
+exports.imageGenerationJobCache = (() => {
+  const cacheKey = `__gatsby-plugin-open-graph-images`;
 
   return {
     init: async (cache) => {
       await cache.set(cacheKey, []);
     },
-    add: async (cache, thumbnailMetadata) => {
+    add: async (cache, imageMetadata) => {
       const metadataCache = await cache.get(cacheKey);
-      metadataCache.push(thumbnailMetadata);
+      metadataCache.push(imageMetadata);
       await cache.set(cacheKey, metadataCache);
     },
     getAll: async (cache) => {

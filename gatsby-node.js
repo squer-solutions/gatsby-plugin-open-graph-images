@@ -1,52 +1,52 @@
 const { join } = require("path");
 const { createOpenGraphImage } = require("./index");
-const { generateThumbnailImages } = require("./src/generator");
+const { generateOgImages } = require("./src/generator");
 const { config } = require("./src/config");
-const { thumbnailGenerationJobCache } = require("./src/cache");
+const { imageGenerationJobCache } = require("./src/cache");
 
 exports.onPreInit = async ({ cache }, pluginConfig) => {
   config.init(pluginConfig);
-  await thumbnailGenerationJobCache.init(cache);
+  await imageGenerationJobCache.init(cache);
 };
 
 exports.onCreatePage = async ({ page, actions, cache }) => {
   if (!config.isValid()) return;
 
-  // check if page is thumbnailPage, in this situation just add metadata to cache
-  // this happens when a thumbnail is directly create via `createThumbnail()`
-  if (!!page.context["__thumbnailGenerationContext"]) {
-    await thumbnailGenerationJobCache.add(cache, page.context["__thumbnailGenerationContext"]);
+  // check if page is an og-image page, in this situation just add metadata to cache
+  // this happens when a image is directly create via `createOpenGraphImage()`
+  if (!!page.context["__ogImageGenerationContext"]) {
+    await imageGenerationJobCache.add(cache, page.context["__ogImageGenerationContext"]);
     return;
   }
 
-  // if page has no thumbnail information given in the context, than we don't need to process it
-  if (!page.context.thumbnail) {
+  // if page has no ogImage information given in the context, than we don't need to process it
+  if (!page.context.ogImage) {
     return;
   }
 
   const { createPage, deletePage } = actions;
 
-  // create new thumbnail page & and add metadata to cache
-  const thumbnailId = encodeURIComponent(page.path.split("/").join(""));
+  // create new ogImage page & and add metadata to cache
+  const ogImageId = encodeURIComponent(page.path.split("/").join(""));
   const implicitModeOptions = config.getConfig().implicitModeOptions;
-  const format = page.context.thumbnail.format || implicitModeOptions.format;
-  const path = join(implicitModeOptions.targetDir, `${thumbnailId}.${format}`);
+  const format = page.context.ogImage.format || implicitModeOptions.format;
+  const path = join(implicitModeOptions.targetDir, `${ogImageId}.${format}`);
 
-  const { thumbnailGenerationJob, thumbnailMetaData } = createOpenGraphImage(createPage, {
+  const { ogImageGenerationJob, ogImageMetaData } = createOpenGraphImage(createPage, {
     path: path,
-    component: page.context.thumbnail.component,
-    size: page.context.thumbnail.size,
+    component: page.context.ogImage.component,
+    size: page.context.ogImage.size,
     context: page.context,
   });
-  await thumbnailGenerationJobCache.add(cache, thumbnailGenerationJob);
+  await imageGenerationJobCache.add(cache, ogImageGenerationJob);
 
-  // update existing page with thumbnail
+  // update existing page with ogImage Metadata
   deletePage(page);
   createPage({
     ...page,
     context: {
       ...page.context,
-      thumbnail: thumbnailMetaData,
+      ogImage: ogImageMetaData,
     },
   });
 };
@@ -54,6 +54,6 @@ exports.onCreatePage = async ({ page, actions, cache }) => {
 exports.onPostBuild = async ({ cache }) => {
   if (!config.isValid()) return;
 
-  const jobDefinitions = await thumbnailGenerationJobCache.getAll(cache);
-  await generateThumbnailImages(jobDefinitions);
+  const jobDefinitions = await imageGenerationJobCache.getAll(cache);
+  await generateOgImages(jobDefinitions);
 };

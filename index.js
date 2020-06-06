@@ -12,18 +12,18 @@ exports.createOpenGraphImage = (createPage, options) => {
   const imgPath = join("public", path);
   const webImgPath = join(domain, path);
 
-  const thumbnailMetaData = { path: webImgPath, size };
-  const thumbnailGenerationJob = { componentPath, imgPath, size };
+  const ogImageMetaData = { path: webImgPath, size };
+  const ogImageGenerationJob = { componentPath, imgPath, size };
 
   createPage({
     path: componentPath,
     component: component,
     context: {
       ...context,
-      thumbnail: thumbnailMetaData,
-      __thumbnailGenerationContext: thumbnailGenerationJob,
+      ogImage: ogImageMetaData,
+      __ogImageGenerationContext: ogImageGenerationJob,
     },
   });
 
-  return { thumbnailGenerationJob, thumbnailMetaData };
+  return { ogImageGenerationJob, ogImageMetaData };
 };

@@ -1,5 +1,5 @@
 {
-  "name": "gatsby-plugin-open-graph-thumbnails",
+  "name": "gatsby-plugin-open-graph-images",
   "version": "0.1.0",
   "description": "Build dynamic open-graph preview images for gatsby pages. Simply use react components to create SEO ready preview images for Twitter, Facebook, Linkedin, Google, and many more.",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/squer-solutions/gatsby-plugin-open-graph-thumbnails.git"
+    "url": "git+https://github.com/squer-solutions/gatsby-plugin-open-graph-images.git"
   },
   "keywords": [
     "og",
@@ -20,9 +20,9 @@
   "author": "David Leitner <david.leitner@squer.at>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/squer-solutions/gatsby-plugin-open-graph-thumbnails/issues"
+    "url": "https://github.com/squer-solutions/gatsby-plugin-open-graph-images/issues"
   },
-  "homepage": "https://github.com/squer-solutions/gatsby-plugin-open-graph-thumbnails#readme",
+  "homepage": "https://github.com/squer-solutions/gatsby-plugin-open-graph-images#readme",
   "dependencies": {
     "express": "^4.17.1",
     "puppeteer": "^3.3.0"

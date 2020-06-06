@@ -3,7 +3,7 @@ import { graphql } from "gatsby";
 
 export default (props) => (
   <>
-    <div>Thumbnail for {props.data.artistsJson.name}</div>
+    <div>Open Graph Image for {props.data.artistsJson.name}</div>
   </>
 );
 
