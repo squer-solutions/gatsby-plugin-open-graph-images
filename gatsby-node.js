@@ -34,9 +34,8 @@ exports.onCreatePage = async ({ page, actions, cache }) => {
 
   const { ogImageGenerationJob, ogImageMetaData } = createOpenGraphImage(createPage, {
     path: path,
-    component: page.context.ogImage.component,
-    size: page.context.ogImage.size,
     context: page.context,
+    ...page.context.ogImage,
   });
   await imageGenerationJobCache.add(cache, ogImageGenerationJob);
 
