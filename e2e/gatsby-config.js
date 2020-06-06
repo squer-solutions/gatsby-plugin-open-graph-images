@@ -26,7 +26,7 @@ module.exports = {
     {
       resolve: require.resolve(`../`),
       options: {
-        domain: "http://localhost:9000"
+        domain: "http://localhost:9000",
       },
     },
   ],
