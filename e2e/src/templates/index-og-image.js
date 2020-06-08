@@ -2,6 +2,6 @@ import React from "react";
 
 export default ({ pageContext }) => (
   <>
-    <div>{pageContext.description}</div>
+    <div>{pageContext.id}</div>
   </>
 );

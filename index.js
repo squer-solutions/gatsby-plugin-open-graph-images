@@ -2,18 +2,15 @@ const { join } = require("path");
 const { config } = require("./src/config");
 
 exports.createOpenGraphImage = (createPage, options) => {
-  if (!config.isValid()) return;
-
-  const { defaultSize, componentGenerationDir, domain } = config.getConfig();
+  const { defaultSize, componentGenerationDir } = config.getConfig();
   const { path, component, context } = options;
 
   const size = { ...defaultSize, ...(options.size || {}) };
   const componentPath = join(componentGenerationDir, encodeURIComponent(path.split("/").join("")));
   const imgPath = join("public", path);
-  const webImgPath = join(domain, path);
 
-  const ogImageMetaData = { path: webImgPath, size };
-  const ogImageGenerationJob = { componentPath, imgPath, size };
+  const generationContext = { componentPath, imgPath, size };
+  const ogImageMetaData = { path, size, __ogImageGenerationContext: generationContext };
 
   createPage({
     path: componentPath,
@@ -21,9 +18,8 @@ exports.createOpenGraphImage = (createPage, options) => {
     context: {
       ...context,
       ogImage: ogImageMetaData,
-      __ogImageGenerationContext: ogImageGenerationJob,
     },
   });
 
-  return { ogImageGenerationJob, ogImageMetaData };
+  return ogImageMetaData;
 };
