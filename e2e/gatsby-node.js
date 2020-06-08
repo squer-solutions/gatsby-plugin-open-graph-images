@@ -1,7 +1,7 @@
 const path = require("path");
 const { createOpenGraphImage } = require("../index");
 
-exports.createPages = async ({ actions, graphql }) => {
+exports.createPages = async ({ actions }) => {
   const { createPage } = actions;
 
   const openGraphImage = createOpenGraphImage(createPage, {
@@ -12,7 +12,7 @@ exports.createPages = async ({ actions, graphql }) => {
       height: 50,
     },
     context: {
-      id: "a image created with gatsby-plugin-open-graph-images",
+      description: "a image created with gatsby-plugin-open-graph-images",
     },
   });
 };
