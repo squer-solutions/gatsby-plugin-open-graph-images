@@ -8,7 +8,7 @@ const IndexPage = () => (
     <Helmet>
       <meta property="og:image" content={domain + "/og-image/index.png"} />
       <meta property="og:image:width" content="400" />
-      <meta property="og:image:width" content="50" />
+      <meta property="og:image:height" content="50" />
     </Helmet>
     Hello World, your image data is stored in the document header.
   </>
