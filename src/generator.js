@@ -28,17 +28,12 @@ exports.generateOgImages = async (imageGenerationJobs) => {
 };
 
 const getServingUrl = async () => {
-  const { NETLIFY: isNetlify, URL: netlifyUrl } = process.env;
+  const app = express();
+  app.use(express.static("public"));
+  const server = http.createServer(app);
+  await server.listen(0);
+  return `http://0.0.0.0:${server.address().port}/`;
 
-  const getUrlFromFreshExpressInstance = async () => {
-    const app = express();
-    app.use(express.static("public"));
-    const server = http.createServer(app);
-    await server.listen(0);
-    return `http://0.0.0.0:${server.address().port}/`;
-  };
-
-  return isNetlify ? netlifyUrl : await getUrlFromFreshExpressInstance();
 };
 
 const ensureThatImageDirExists = (path) => {
