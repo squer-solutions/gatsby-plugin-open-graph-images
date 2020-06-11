@@ -21,7 +21,8 @@ exports.generateOgImages = async (imageGenerationJobs) => {
 
     fs.unlinkSync(join("public", componentPath, "index.html"));
 
-    console.log(`🖼  created Image: ${imgPath} ${size.width}x${size.height}`);
+    const printPath = `${imgPath.replace("public", "")} ${size.width}x${size.height}`;
+    console.log(`🖼  created Image: ${printPath}`);
   }
 
   await browser.close();
