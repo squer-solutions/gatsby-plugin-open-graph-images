@@ -52,5 +52,16 @@ You can than simply include your open-graph image within your page. For example 
 
 | option                 | type       | description                                                                                                                          |
 | ---------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| defaultSize            | _optional_ | The default size for the generated image if not explicitly specified.<br>_default:_ `{ width: 1200, height: 630}`                    |
-| componentGenerationDir | _optional_ | The directory where the rendered gatsby components are temporarily stored, to be later saved as images<br>_default:_ `"__generated"` |
+| `defaultSize`            | _optional_ | The default size for the generated image if not explicitly specified.<br>_default:_ `{ width: 1200, height: 630}`                    |
+| `componentGenerationDir` | _optional_ | The directory where the rendered gatsby components are temporarily stored, to be later saved as images<br>_default:_ `"__generated"` |
+
+If you use plugins that iterate over all your components, like `gatsby-plugin-sitemap`, exclude the `componentGenerationDir`:
+
+```js
+{
+  resolve: `gatsby-plugin-sitemap`,
+  options: {
+    exclude: [`/__generated/*`],
+  },
+},
+```
