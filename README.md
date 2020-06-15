@@ -46,7 +46,7 @@ You can than simply include your open-graph image within your page. For example 
 </Helmet>
 ```
 
-**A more advanced usage** of `createOpenGraphImage()` is described in this [dev.to article]("#").
+**A more advanced usage** of `createOpenGraphImage()` is described in this [dev.to article]("https://dev.to/duffleit/bridging-the-gap-between-gatsby-and-open-graph-images-52gh").
 
 ## Options
 
