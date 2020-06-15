@@ -13,6 +13,8 @@
     "url": "git+https://github.com/squer-solutions/gatsby-plugin-open-graph-images.git"
   },
   "keywords": [
+    "gatsby",
+    "gatsby-plugin",
     "og",
     "openGraph",
     "seo",
