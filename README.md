@@ -16,7 +16,7 @@ plugins: [`gatsby-plugin-open-graph-images`];
 
 ## How to use
 
-The creation of Open Graph images is created by `createOpenGraphImage()` within your `gatsby-node.js` file.
+The creation of Open Graph images is done by `createOpenGraphImage()` within your `gatsby-node.js` file.
 
 ```js
 exports.createPages = async ({ actions }) => {
