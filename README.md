@@ -2,6 +2,9 @@
 
 # Gatsby Plugin: Open Graph Images
 
+![Publish](https://github.com/squer-solutions/gatsby-plugin-open-graph-images/workflows/Publish/badge.svg)
+[![npm version](http://img.shields.io/npm/v/gatsby-plugin-open-graph-images.svg?style=flat)](https://npmjs.org/package/gatsby-plugin-open-graph-images "View this project on npm")
+
 A [Gatsby](https://github.com/gatsbyjs/gatsby) plugin to derive and generated
 Images for the [Open Graph Protocol](https://ogp.me/) directly from React Components.
 
