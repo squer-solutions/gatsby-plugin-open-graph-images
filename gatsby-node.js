@@ -11,7 +11,8 @@ exports.onPreBootstrap = async ({ cache }) => {
 };
 
 exports.onCreatePage = async ({ page, cache }) => {
-  if (!!page.context.ogImage && !!page.context.ogImage["__ogImageGenerationContext"]) {
+  const { componentGenerationDir } = config.getConfig()
+  if (page.path.startsWith(`/${componentGenerationDir}/`)) {
     await imageGenerationJobCache.add(cache, page.context.ogImage["__ogImageGenerationContext"]);
   }
 };
