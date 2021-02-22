@@ -44,7 +44,7 @@ const ensureThatImageDirExists = (path) => {
     fs.statSync(targetDir);
   } catch (err) {
     if (err.code === "ENOENT") {
-      fs.mkdirSync(targetDir);
+      fs.mkdirSync(targetDir, { recursive: true });
     }
   }
 };
