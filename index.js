@@ -2,6 +2,7 @@ const { join } = require("path");
 const { config } = require("./src/config");
 
 exports.createOpenGraphImage = (createPage, options) => {
+  config.init(options)
   const { defaultSize, componentGenerationDir } = config.getConfig();
   const { path, component, context } = options;
 
