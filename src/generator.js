@@ -3,7 +3,7 @@ const express = require("express");
 const fs = require("fs");
 const http = require("http");
 const { join, dirname } = require("path");
-const config = require("./config");
+const { config } = require("./config");
 
 exports.generateOgImages = async (imageGenerationJobs) => {
   const { puppeteerLaunchOptions } = config.getConfig();
