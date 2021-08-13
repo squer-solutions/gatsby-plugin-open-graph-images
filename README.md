@@ -53,10 +53,11 @@ You can than simply include your open-graph image within your page. For example 
 
 ## Options
 
-| option                 | type       | description                                                                                                                          |
-| ---------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `defaultSize`            | _optional_ | The default size for the generated image if not explicitly specified.<br>_default:_ `{ width: 1200, height: 630}`                    |
-| `componentGenerationDir` | _optional_ | The directory where the rendered gatsby components are temporarily stored, to be later saved as images<br>_default:_ `"__generated"` |
+| option                   | type       | description                                                                                                                                                                       |
+| ------------------------ | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `defaultSize`            | _optional_ | The default size for the generated image if not explicitly specified.<br>_default:_ `{ width: 1200, height: 630}`                                                                 |
+| `componentGenerationDir` | _optional_ | The directory where the rendered gatsby components are temporarily stored, to be later saved as images<br>_default:_ `"__generated"`                                              |
+| `puppeteerLaunchOptions` | _optional_ | The options for the [puppeteer](https://pptr.dev/) launch. See [here](https://pptr.dev/#?product=Puppeteer&version=v10.2.0&show=api-puppeteerlaunchoptions) for more information. |
 
 If you use plugins that iterate over your pages, like `gatsby-plugin-sitemap`, exclude the `componentGenerationDir`:
 
