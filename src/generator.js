@@ -5,8 +5,9 @@ const http = require("http");
 const { join, dirname } = require("path");
 
 exports.generateOgImages = async (imageGenerationJobs) => {
+  const { puppeteerLaunchOptions } = config.getConfig();
   const servingUrl = await getServingUrl();
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch(puppeteerLaunchOptions);
   const page = await browser.newPage();
 
   for (const imageGenerationJob of imageGenerationJobs) {
@@ -14,7 +15,7 @@ exports.generateOgImages = async (imageGenerationJobs) => {
     const componentUrl = `${servingUrl}/${componentPath}`;
 
     await page.setViewport(size);
-    await page.goto(componentUrl, { 'waitUntil' : 'networkidle2' });
+    await page.goto(componentUrl, { waitUntil: "networkidle2" });
 
     ensureThatImageDirExists(imgPath);
     await page.screenshot({ path: imgPath, clip: { x: 0, y: 0, ...size } });
@@ -33,7 +34,6 @@ const getServingUrl = async () => {
   const server = http.createServer(app);
   await server.listen(0);
   return `http://0.0.0.0:${server.address().port}/`;
-
 };
 
 const ensureThatImageDirExists = (path) => {
