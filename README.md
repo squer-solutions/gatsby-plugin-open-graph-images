@@ -32,6 +32,7 @@ exports.createPages = async ({ actions }) => {
       width: 400,
       height: 50,
     },
+    waitCondition: "networkidle0",
     context: {
       description: "a image created with gatsby-plugin-open-graph-images",
     },

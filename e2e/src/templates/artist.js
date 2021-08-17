@@ -2,6 +2,8 @@ import * as React from "react";
 import { graphql } from "gatsby";
 import { Helmet } from "react-helmet";
 
+const domain = "http://localhost:9000";
+
 const ArtistPage = ({ data, pageContext }) => {
   return (
     <>

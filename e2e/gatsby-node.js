@@ -7,6 +7,7 @@ exports.createPages = async ({ actions, graphql }) => {
   createOpenGraphImage(createPage, {
     path: "/og-image/index.png",
     component: path.resolve(`src/templates/index-og-image.js`),
+    waitCondition: "networkidle0",
     size: {
       width: 400,
       height: 50

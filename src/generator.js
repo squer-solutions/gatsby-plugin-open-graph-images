@@ -10,11 +10,11 @@ exports.generateOgImages = async (imageGenerationJobs) => {
   const page = await browser.newPage();
 
   for (const imageGenerationJob of imageGenerationJobs) {
-    const { componentPath, imgPath, size } = imageGenerationJob;
+    const { componentPath, imgPath, size, waitCondition } = imageGenerationJob;
     const componentUrl = `${servingUrl}/${componentPath}`;
 
     await page.setViewport(size);
-    await page.goto(componentUrl, { 'waitUntil' : 'networkidle2' });
+    await page.goto(componentUrl, { 'waitUntil' : waitCondition });
 
     ensureThatImageDirExists(imgPath);
     await page.screenshot({ path: imgPath, clip: { x: 0, y: 0, ...size } });

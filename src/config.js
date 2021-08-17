@@ -4,6 +4,7 @@ exports.config = (() => {
       width: 1200,
       height: 630,
     },
+    defaultWaitCondition: 'networkidle2',
     componentGenerationDir: "__generated",
   };
 
