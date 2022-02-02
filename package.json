@@ -1,6 +1,6 @@
 {
   "name": "gatsby-plugin-open-graph-images",
-  "version": "0.1.5",
+  "version": "0.1.8",
   "description": "Build dynamic open-graph preview images for gatsby pages. Simply use react components to create SEO ready preview images for Twitter, Facebook, Linkedin, Google, and many more.",
   "main": "index.js",
   "scripts": {
